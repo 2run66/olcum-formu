@@ -46,10 +46,11 @@ textarea{min-height:130px;resize:vertical}
 .row .t em{font-style:normal;font-weight:600;font-size:12px;color:var(--muted);white-space:nowrap}
 .row .in{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
 .row .in .full{grid-column:1/-1}
+.row .in.four .full{grid-column:auto}
 .row .in span{display:block;font-size:11px;font-weight:700;color:var(--muted);margin-bottom:3px;text-transform:uppercase}
 .row.calc{background:#f7fbf8}
 .cols{display:grid;grid-template-columns:1fr;gap:0 24px}
-@media(min-width:760px){.cols{grid-template-columns:1fr 1fr}.row .in{grid-template-columns:1fr 1fr 1.6fr}.row .in .full{grid-column:auto}.row.two .in{grid-template-columns:1fr 1fr}}
+@media(min-width:760px){.cols{grid-template-columns:1fr 1fr}.row .in{grid-template-columns:1fr 1fr 1.6fr}.row .in .full{grid-column:auto}.row.two .in{grid-template-columns:1fr 1fr}.row .in.four{grid-template-columns:1fr 1fr 1fr 1.6fr}}
 nav.nv{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom));display:flex;gap:10px;justify-content:center;z-index:6}
 nav.nv button{flex:1;max-width:260px}
 button{font:inherit;font-weight:700;font-size:15px;min-height:46px;border-radius:10px;border:1px solid var(--line);background:#fff;color:var(--ink);padding:0 16px;cursor:pointer}
@@ -235,9 +236,10 @@ function textRows(id, list, prefix, startAt=1){
   $('#'+id).innerHTML = list.map((t,i)=>{
     const k = prefix+'_'+slug(t);
     return `<div class="row"><div class="t"><span>${startAt+i}. ${h(t)}</span></div>
-      <div class="in"><div><span>Birim</span><input type="text" name="${k}_birim"></div>
-      <div><span>1. Deneme</span><input type="text" name="${k}_1"></div>
-      <div class="full"><span>2. Deneme / Not</span><input type="text" name="${k}_2"></div></div></div>`;
+      <div class="in four"><div><span>1. Deneme</span><input type="text" name="${k}_1"></div>
+      <div><span>2. Deneme</span><input type="text" name="${k}_2"></div>
+      <div><span>Birim</span><input type="text" name="${k}_birim"></div>
+      <div><span>Not</span><input type="text" name="${k}_not"></div></div></div>`;
   }).join('');
 }
 function calcRows(id, list, startAt){
