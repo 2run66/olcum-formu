@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bedenden Beyne – Ölçüm Formu</title>
+<meta name="theme-color" content="#b81d5a">
+<style>
+:root{--ink:#0f2a3d;--muted:#5a6b7a;--brand:#b81d5a;--line:#d5dee6;--bg:#f4f7fa;--card:#fff;--field:#f1f6fa;--ok:#1b7f4b}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.4}
+header{background:#fff;border-bottom:1px solid var(--line);padding:12px 16px;display:flex;gap:12px;align-items:center}
+header img{width:56px;height:auto}
+header h1{font-size:17px;margin:0;letter-spacing:.2px}
+header p{margin:2px 0 0;font-size:12px;color:var(--muted)}
+.prof{margin-left:auto;text-align:right;font-size:13px;font-weight:700}
+.prof small{display:block;font-weight:600;color:var(--muted);font-size:11px}
+.bar{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--line);padding:8px 16px}
+.bar .lbl{font-size:12px;color:var(--muted);display:flex;justify-content:space-between}
+.track{height:6px;background:var(--line);border-radius:3px;margin-top:6px;overflow:hidden}
+.track i{display:block;height:100%;width:0;background:var(--brand);transition:width .25s}
+main{max-width:860px;margin:0 auto;padding:16px 16px 110px}
+h2{color:var(--brand);font-size:16px;text-transform:uppercase;margin:6px 0 14px}
+h3{font-size:14px;margin:20px 0 10px;padding-left:10px;border-left:6px solid var(--brand);border-radius:3px}
+.step{display:none}.step.on{display:block}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+label.f{display:block;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:9px 10px;font-size:11px;font-weight:800;text-transform:uppercase;color:var(--ink)}
+label.f input,label.f select{display:block;width:100%;margin-top:5px}
+input[type=text],input[type=email],input[type=date],input[type=number],select,textarea{font:inherit;font-size:16px;font-weight:500;text-transform:none;color:var(--ink);background:var(--field);border:1px solid transparent;border-radius:8px;padding:10px;min-height:44px;width:100%}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--brand);background:#fff}
+textarea{min-height:130px;resize:vertical}
+.opt{display:flex;gap:12px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:10px;cursor:pointer}
+.opt input{width:22px;height:22px;margin:2px 0 0;flex:none;accent-color:var(--brand)}
+.opt b{display:block;font-size:14px}.opt span{font-size:13px;color:var(--muted)}
+.opt:has(input:checked){border-color:var(--brand);background:#fff4f8}
+.q{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:10px;font-size:14px}
+.yn{display:flex;gap:10px;margin-top:10px}
+.yn label{flex:1;text-align:center;border:1px solid var(--line);border-radius:8px;padding:10px;font-weight:700;font-size:14px;cursor:pointer;background:var(--field)}
+.yn input{position:absolute;opacity:0;pointer-events:none}
+.yn label:has(input:checked){background:var(--brand);color:#fff;border-color:var(--brand)}
+.yn label:has(input[value=Hayır]:checked){background:var(--ok);border-color:var(--ok)}
+.note{font-size:13px;margin:6px 0 12px}.note.warn{color:var(--brand)}
+.row{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:10px}
+.row .t{font-weight:700;font-size:14px;display:flex;justify-content:space-between;gap:8px}
+.row .t em{font-style:normal;font-weight:600;font-size:12px;color:var(--muted);white-space:nowrap}
+.row .in{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.row .in .full{grid-column:1/-1}
+.row .in span{display:block;font-size:11px;font-weight:700;color:var(--muted);margin-bottom:3px;text-transform:uppercase}
+.row.calc{background:#f7fbf8}
+.cols{display:grid;grid-template-columns:1fr;gap:0 24px}
+@media(min-width:760px){.cols{grid-template-columns:1fr 1fr}.row .in{grid-template-columns:1fr 1fr 1.6fr}.row .in .full{grid-column:auto}.row.two .in{grid-template-columns:1fr 1fr}}
+nav.nv{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom));display:flex;gap:10px;justify-content:center;z-index:6}
+nav.nv button{flex:1;max-width:260px}
+button{font:inherit;font-weight:700;font-size:15px;min-height:46px;border-radius:10px;border:1px solid var(--line);background:#fff;color:var(--ink);padding:0 16px;cursor:pointer}
+button.p{background:var(--brand);border-color:var(--brand);color:#fff}
+button:disabled{opacity:.4}
+.consent{display:flex;gap:10px;align-items:flex-start;font-size:13px;margin:14px 0}
+.consent input{width:20px;height:20px;flex:none;accent-color:var(--brand)}
+.acts{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+.acts button{flex:1;min-width:150px}
+#msg{margin-top:14px;font-size:14px;font-weight:600}
+.err{color:#b00020}.good{color:var(--ok)}
+footer{font-size:11px;color:var(--muted);text-align:center;padding:0 16px 120px}
+@media print{
+  body{background:#fff}.bar,nav.nv,.acts,.consent,#msg,footer{display:none!important}
+  .step{display:block!important;page-break-after:always}.step:last-child{page-break-after:auto}
+  main{padding:0}.row,.q,.opt,label.f{break-inside:avoid}
+  input,select,textarea{background:#fff!important;border:1px solid #bbb!important}
+}
+</style>
+</head>
+<body>
+<header>
+  <img src="logo.png" alt="Bedenden Beyne Gelişim Merkezi">
+  <div><h1>BEDENDEN BEYNE</h1><p>Profesyonel Sağlık ve Egzersiz Danışmanlığı</p></div>
+  <div class="prof">Prof. Dr. Cengiz Akalan<small>ÖLÇÜM FORMU</small></div>
+</header>
+<div class="bar"><div class="lbl"><span id="stTitle"></span><span id="stNo"></span></div><div class="track"><i id="prog"></i></div></div>
+
+<main>
+<form id="form" autocomplete="off" novalidate>
+
+<!-- 1 -->
+<section class="step" data-title="Katılımcı Profili">
+  <h2>Katılımcı Profili ve Fiziksel Aktivite Düzeyi</h2>
+  <div class="grid">
+    <label class="f">Adı Soyadı<input type="text" name="ad_soyad" autocomplete="name"></label>
+    <label class="f">E-posta<input type="email" name="eposta" inputmode="email" autocomplete="email"></label>
+    <label class="f">Cinsiyet<select name="cinsiyet"><option value="">Seçiniz</option><option>Kız / Kadın</option><option>Erkek</option></select></label>
+    <label class="f">Ölçüm Tarihi<input type="date" name="olcum_tarihi" id="olcumTarihi"></label>
+    <label class="f">Doğum Tarihi<input type="date" name="dogum_tarihi" id="dogumTarihi"></label>
+    <label class="f">Yaş<input type="text" name="yas" id="yas" inputmode="decimal"></label>
+    <label class="f">Çeğrek Yaşı<input type="text" name="cegrek_yasi"></label>
+    <label class="f">Uyruğu<input type="text" name="uyruk"></label>
+    <label class="f">Anne Ayakta Boy Uzunluğu (cm)<input type="text" name="anne_boy" id="anneBoy" inputmode="decimal"></label>
+    <label class="f">Baba Ayakta Boy Uzunluğu (cm)<input type="text" name="baba_boy" id="babaBoy" inputmode="decimal"></label>
+  </div>
+  <h3>Fiziksel Aktivite Düzeyi · Uygun olanı işaretleyin</h3>
+  <div id="aktivite"></div>
+</section>
+
+<!-- 2 -->
+<section class="step" data-title="PAR-Q ve Kardiyovasküler">
+  <h2>Fiziksel Aktiviteye Hazır Bulunuşluk Sorgusu (PAR-Q) ve Kardiyovasküler Ölçümler</h2>
+  <h3>PAR-Q Yanıtlama ve Güvenlik Bilgisi</h3>
+  <p class="note">Tüm sorulara "HAYIR" cevabı verdiyseniz: Mevcut fiziksel aktivite hazır bulunuşluğunuz spora başlamak için uygundur. Egzersiz yoğunluğunu kademeli olarak artırarak güvenle spor yapabilirsiniz.</p>
+  <p class="note warn">Herhangi bir soruya "EVET" cevabı verdiyseniz: Yeni bir egzersiz programına başlamadan, mevcut aktivite seviyenizi artırmadan veya bir fitness merkezine kaydolmadan önce mutlaka bir doktora danışmanız gerekir. Hangi egzersiz türlerinin sizin için güvenli olduğunu ve hangilerinden kaçınmanız gerektiğini öğrenmelisiniz.</p>
+  <div id="parq"></div>
+  <h3>Kardiyo-Vasküler Ölçümler</h3>
+  <div id="kardiyo"></div>
+</section>
+
+<!-- 3 -->
+<section class="step" data-title="Uzunluk Ölçümleri">
+  <h2>Antropometri ve Vücut Kompozisyonu · Uzunluk Ölçümleri</h2>
+  <div id="uzunluk"></div>
+</section>
+
+<!-- 4 -->
+<section class="step" data-title="Çevre Ölçümleri">
+  <h2>Antropometri ve Vücut Kompozisyonu · Çevre Ölçümleri</h2>
+  <div id="cevre"></div>
+</section>
+
+<!-- 5 -->
+<section class="step" data-title="Genişlik ve Deri Kıvrımı">
+  <h2>Antropometri ve Vücut Kompozisyonu · Genişlik ve Deri Kıvrımı Ölçümleri</h2>
+  <div class="cols">
+    <div><h3>Genişlik Ölçümleri</h3><div id="genislik"></div></div>
+    <div><h3>Deri Kıvrımı Ölçümleri</h3><div id="deri"></div></div>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="step" data-title="Biyomotor Beceriler">
+  <h2>Biyomotor Beceriler ve Fiziksel Performans</h2>
+  <div id="biyo"></div>
+</section>
+
+<!-- 7 -->
+<section class="step" data-title="Büyüme ve Olgunlaşma">
+  <h2>Büyüme ve Olgunlaşma</h2>
+  <div id="buyume"></div>
+</section>
+
+<!-- 8 -->
+<section class="step" data-title="Laboratuvar">
+  <h2>Fizyolojik Göstergeler ve Laboratuvar Sonuçları</h2>
+  <div class="cols">
+    <div><h3>Laboratuvar Göstergeleri · 1</h3><div id="lab1"></div></div>
+    <div><h3>Laboratuvar Göstergeleri · 2</h3><div id="lab2"></div></div>
+  </div>
+</section>
+
+<!-- 9 -->
+<section class="step" data-title="Hesaplamalar ve Notlar">
+  <h2>Otomatik Hesaplamalar ve Değerlendirme Notları</h2>
+  <p class="note">Yeşil işaretli satırlar girdiğiniz değerlerden otomatik hesaplanır. Dilerseniz elle düzeltebilirsiniz.</p>
+  <div class="cols">
+    <div><h3>Otomatik Hesaplamalar · 1</h3><div id="calc1"></div></div>
+    <div><h3>Otomatik Hesaplamalar · 2</h3><div id="calc2"></div></div>
+  </div>
+  <h3>Genel Notlar / Değerlendirme</h3>
+  <textarea name="genel_notlar" aria-label="Genel notlar"></textarea>
+
+  <label class="consent"><input type="checkbox" id="kvkk">
+    <span>Sağlık verilerimin, ölçüm ve değerlendirme amacıyla Bedenden Beyne Gelişim Merkezi tarafından işlenmesine ve paylaşılmasına açık rızam vardır.</span></label>
+  <div class="acts">
+    <button type="button" class="p" id="btnSend">Formu Gönder</button>
+    <button type="button" id="btnPdf">PDF olarak kaydet / yazdır</button>
+    <button type="button" id="btnCsv">CSV indir</button>
+  </div>
+  <div id="msg" role="status"></div>
+  <p style="margin-top:18px"><button type="button" id="btnClear">Formu temizle</button></p>
+</section>
+</form>
+</main>
+
+<nav class="nv"><button type="button" id="prev">‹ Geri</button><button type="button" class="p" id="next">İleri ›</button></nav>
+<footer>Girdiğiniz bilgiler bu cihazda otomatik olarak saklanır; "Formu Gönder"e basana kadar kimseyle paylaşılmaz.</footer>
+
+<script>
+/* ============ AYAR ============
+   Formspree (formspree.io) hesabınızdan aldığınız adresi buraya yapıştırın,
+   örn: "https://formspree.io/f/abcdwxyz". Boş bırakılırsa "Gönder" yerine
+   kişi PDF/CSV dosyasını kendisi paylaşır. */
+const FORM_ENDPOINT = "https://formspree.io/f/xqppkznj";
+/* ================================ */
+
+const $ = (s, r=document) => r.querySelector(s);
+const slug = s => s.toLowerCase().replace(/ı/g,'i').replace(/ş/g,'s').replace(/ğ/g,'g').replace(/ü/g,'u').replace(/ö/g,'o').replace(/ç/g,'c').replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');
+
+const AKTIVITE = [
+ ["Sedanter (Hareketsiz / İnaktif)","İstirahat halindeki enerji harcamasına çok yakın veya oturarak geçirilen aktiviteler."],
+ ["Çok Hafif / Hafif Düzey Aktivite","Yavaş yürüyüş, ev içinde hafif işler, ayakta durma."],
+ ["Orta Düzey (Moderate) Aktivite","Tempolu yürüyüş (saatte 4-6 km), düz zeminde bisiklet sürme, hafif tempoda yüzme."],
+ ["Şiddetli / Yüksek Düzey (Vigorous) Aktivite","Koşu / jogging, hızlı bisiklet, ip atlama, tempolu takım sporları (basketbol, futbol)."],
+ ["Çok Yüksek / Maksimal Düzey Aktivite","Sprintler, maksimum eforlu aralıklı antrenmanlar."]
+];
+const PARQ = [
+ "Doktorunuz size bir kalp rahatsızlığınız olduğunu ve sadece hekim kontrolünde, tavsiye edilen fiziksel aktiviteleri yapmanız gerektiğini söyledi mi?",
+ "Fiziksel bir aktivite yaparken ya da egzersiz sırasında göğsünüzde bir ağrı veya sıkışma hissediyor musunuz?",
+ "Son bir ay içinde, herhangi bir fiziksel aktivite yapmıyorken (dinlenme halindeyken) göğsünüzde hiç ağrı hissettiniz mi?",
+ "Baş dönmesi nedeniyle dengenizi kaybettiğiniz oldu mu veya hiç bilincinizi yitirdiniz mi (baygınlık geçirdiniz mi)?",
+ "Kemik, eklem, kas veya bağ dokularınızda, fiziksel aktiviteye veya hareket etmekle daha da kötüleşebilecek bir probleminiz var mı?",
+ "Kan basıncınız (tansiyon) veya kalbinizdeki bir rahatsızlık nedeniyle doktorunuzun reçete ettiği herhangi bir ilaç kullanıyor musunuz?",
+ "Fiziksel aktivite yapmanıza engel teşkil edebilecek, yukarıda bahsedilmeyen başka bir sağlık sorununuz ya da fiziksel gerekçeniz var mı?"
+];
+// [etiket, birim]
+const KARDIYO = [["SPO₂ – Oksijen Satürasyonu","%"],["Dinlenik kalp hızı","atım/dk"],["Sistolik kan basıncı","mmHg"],["Diyastolik kan basıncı","mmHg"]];
+const UZUNLUK = [["Vücut Ağırlığı","kg"],["Ayakta Boy Uzunluğu","cm"],["Kulaç Uzunluğu (Kol Açıklığı)","cm"],["Sağ Tam Kol Uzunluğu","cm"],["Sol Tam Kol Uzunluğu","cm"],["Oturma Boy Uzunluğu","cm"],["Tam Bacak Uzunluğu (Boy − Oturma Boyu)","cm"],["Ayak Uzunluğu","cm"]];
+const CEVRE = [["Boyun Çevresi","cm"],["Omuz Çevresi","cm"],["Sağ Üst Kol Çevresi","cm"],["Bükülü ve Kasılı Sağ Üst Kol Çevresi","cm"],["Sağ Ön Kol Çevresi","cm"],["Göğüs Altı Göbek Üstü Bel Çevresi (Waist)","cm"],["Karın (Göbek) Çevresi","cm"],["Kalça Çevresi","cm"],["Sağ Üst Bacak (Uyluk) Çevresi","cm"],["Sağ Alt Bacak (Baldır) Çevresi","cm"]];
+const GENISLIK = [["Omuz Genişliği","mm"],["Sağ Dirsek (Humerus) Genişliği","mm"],["Kalça (Biotrokanterik) Genişliği","mm"],["Sağ Diz Altı (Femur) Genişliği","mm"]];
+const DERI = [["Sağ Üst Arka Kol (Triceps) Deri Kıvrımı","mm"],["Sağ Subscapular Deri Kıvrımı","mm"],["Sağ Supraspinal Deri Kıvrımı","mm"],["Sağ İç Orta Baldır Deri Kıvrımı","mm"]];
+const BIYO = [["Flamingo Denge Testi (60sn) Düşme Sayısı","sayı"],["Sağ El Kavrama Kuvveti","kg"],["Sol El Kavrama Kuvveti","kg"],["Kollar Serbest Çökerek Dikey Sıçrama","cm"],["Durarak Uzun Atlama","cm"],["Otur-Uzan-Eriş Esneklik Testi","cm"],["30 Saniye Kısmi (dize uzanarak) Mekik","sayı"],["Bükülü Kol Asılma","sn"],["Cetvel Düşürme Testi","cm"],["Disklere Dokunma Testi (50 dokunuş)","sn"]];
+const BUYUME = ["Kemik mineral yoğunluğu (BMD)","Kemik mineral içeriği (BMC)","Kemik yaşı (Greulich-Pyle)","TW kemik yaşı (Tanner-Whitehouse)","RUS skoru (Tanner-Whitehouse)","Olgunlaşma sınıfı"];
+const LAB1 = ["Hemoglobin (Hb)","Ferritin","Total Kolesterol (TC)","Düşük Yoğunluklu Lipoprotein (LDL)","Yüksek Yoğunluklu Lipoprotein (HDL)","Trigliserid (TG)","Kan Glukozu","Hemoglobin A1c (HbA1c)","Sodyum (Na+)"];
+const LAB2 = ["Potasyum (K+)","Kalsiyum (Ca2+)","Magnezyum (Mg2+)","D Vitamini (25 OH)","B12 Vitamini","Folat (Folik Asit)","C Vitamini (Askorbik Asit)","E Vitamini (Tokoferol)","Testosteron (T)"];
+const CALC1 = ["Olgunlaşma Durumu","Tepe Boy Uzama Hızı","Tepe Boya Uzaklık (yıl-ay)","Vücut Tipi Sınıflandırması (somatotip)","Beden Kütle İndeksi","Ebeveyn Boy Ortalaması (cm)","Tahmini Yetişkin Boyu (Khamis Roche Formülü) (cm)"];
+const CALC2 = ["Oturma yüksekliğinin ayakta boy uzunluğuna oranı","Kulaç uzunluğunun boy uzunluğuna oranı","Bel çevresinin boy uzunluğuna oranı","İki bölge deri kıvrım ölçümüne göre vücut yağ kütlesi","İki bölge deri kıvrım ölçümüne göre vücut yağ yüzdesi","İki bölge deri kıvrım ölçümüne göre yağsız vücut kütlesi","İki bölge deri kıvrım ölçümüne göre yağsız vücut kütlesi yüzdesi"];
+
+const h = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function trialRows(id, list, prefix, labels=["1. Deneme","2. Deneme","Not"]){
+  $('#'+id).innerHTML = list.map(([t,u],i)=>{
+    const k = prefix+'_'+slug(t);
+    return `<div class="row"><div class="t"><span>${i+1}. ${h(t)}</span><em>${h(u)}</em></div>
+      <div class="in"><div><span>${labels[0]}</span><input type="text" inputmode="decimal" name="${k}_1" data-k="${k}"></div>
+      <div><span>${labels[1]}</span><input type="text" inputmode="decimal" name="${k}_2"></div>
+      <div class="full"><span>${labels[2]}</span><input type="text" name="${k}_not"></div></div></div>`;
+  }).join('');
+}
+function textRows(id, list, prefix, startAt=1){
+  $('#'+id).innerHTML = list.map((t,i)=>{
+    const k = prefix+'_'+slug(t);
+    return `<div class="row"><div class="t"><span>${startAt+i}. ${h(t)}</span></div>
+      <div class="in"><div><span>Birim</span><input type="text" name="${k}_birim"></div>
+      <div><span>1. Deneme</span><input type="text" name="${k}_1"></div>
+      <div class="full"><span>2. Deneme / Not</span><input type="text" name="${k}_2"></div></div></div>`;
+  }).join('');
+}
+function calcRows(id, list, startAt){
+  $('#'+id).innerHTML = list.map((t,i)=>{
+    const k = 'hesap_'+slug(t);
+    return `<div class="row calc two"><div class="t"><span>${startAt+i}. ${h(t)}</span></div>
+      <div class="in"><div><span>Sonuç</span><input type="text" name="${k}" data-calc="${startAt+i}"></div>
+      <div><span>Not</span><input type="text" name="${k}_not"></div></div></div>`;
+  }).join('');
+}
+
+$('#aktivite').innerHTML = AKTIVITE.map(([t,d],i)=>`<label class="opt"><input type="radio" name="aktivite" value="${h(t)}"><div><b>${h(t)}</b><span>${h(d)}</span></div></label>`).join('');
+$('#parq').innerHTML = PARQ.map((q,i)=>`<div class="q">${i+1}. ${h(q)}<div class="yn"><label><input type="radio" name="parq_${i+1}" value="Evet">EVET</label><label><input type="radio" name="parq_${i+1}" value="Hayır">HAYIR</label></div></div>`).join('');
+trialRows('kardiyo',KARDIYO,'kardiyo');
+trialRows('uzunluk',UZUNLUK,'uzunluk');
+trialRows('cevre',CEVRE,'cevre');
+trialRows('genislik',GENISLIK,'genislik',["1.","2.","Not"]);
+trialRows('deri',DERI,'deri',["1.","2.","Not"]);
+trialRows('biyo',BIYO,'biyo');
+textRows('buyume',BUYUME,'buyume');
+textRows('lab1',LAB1,'lab',1);
+textRows('lab2',LAB2,'lab',10);
+calcRows('calc1',CALC1,1);
+calcRows('calc2',CALC2,8);
+
+/* ---------- Adımlar ---------- */
+const steps = [...document.querySelectorAll('.step')];
+let cur = 0;
+function show(n){
+  cur = Math.max(0, Math.min(steps.length-1, n));
+  steps.forEach((s,i)=>s.classList.toggle('on', i===cur));
+  $('#stTitle').textContent = steps[cur].dataset.title;
+  $('#stNo').textContent = (cur+1)+' / '+steps.length;
+  $('#prog').style.width = ((cur+1)/steps.length*100)+'%';
+  $('#prev').disabled = cur===0;
+  $('#next').style.display = cur===steps.length-1 ? 'none' : '';
+  window.scrollTo({top:0});
+  try{localStorage.setItem('bb_step',cur)}catch(e){}
+}
+$('#prev').onclick = ()=>show(cur-1);
+$('#next').onclick = ()=>show(cur+1);
+
+/* ---------- Otomatik hesaplama ---------- */
+const form = $('#form');
+const num = v => { const n = parseFloat(String(v||'').replace(',','.')); return isNaN(n) ? null : n; };
+const avg = k => { const a=[num(form[k+'_1']?.value), num(form[k+'_2']?.value)].filter(x=>x!==null); return a.length ? a.reduce((x,y)=>x+y)/a.length : null; };
+const r = (v,d=2)=> v===null||!isFinite(v) ? '' : String(Math.round(v*10**d)/10**d).replace('.',',');
+const touched = new Set();
+function setCalc(n, val){ const el = document.querySelector(`[data-calc="${n}"]`); if(el && !touched.has(n)) el.value = val; }
+function recalc(){
+  // yaş
+  const d1=form.dogum_tarihi.value, d2=form.olcum_tarihi.value;
+  if(d1 && d2 && !touched.has('yas')){
+    const y=(new Date(d2)-new Date(d1))/(365.25*864e5);
+    if(y>=0) form.yas.value = r(y,1);
+  }
+  const kilo = avg('uzunluk_vucut_agirligi'), boy = avg('uzunluk_ayakta_boy_uzunlugu');
+  const oturma = avg('uzunluk_oturma_boy_uzunlugu'), kulac = avg('uzunluk_kulac_uzunlugu_kol_acikligi');
+  const bel = avg('cevre_gogus_alti_gobek_ustu_bel_cevresi_waist');
+  setCalc(5, kilo&&boy ? r(kilo/((boy/100)**2),1) : '');
+  const a=num(form.anne_boy.value), b=num(form.baba_boy.value);
+  setCalc(6, a&&b ? r((a+b)/2,1) : '');
+  setCalc(8, oturma&&boy ? r(oturma/boy,3) : '');
+  setCalc(9, kulac&&boy ? r(kulac/boy,3) : '');
+  setCalc(10, bel&&boy ? r(bel/boy,3) : '');
+}
+form.addEventListener('input', e=>{
+  if(e.target.id==='yas') touched.add('yas');
+  if(e.target.dataset.calc) touched.add(+e.target.dataset.calc);
+  recalc(); save();
+});
+form.addEventListener('change', save);
+
+/* ---------- Kaydet / yükle (cihazda) ---------- */
+function data(){
+  const o={};
+  new FormData(form).forEach((v,k)=>{ if(String(v).trim()!=='') o[k]=v; });
+  return o;
+}
+function save(){ try{ localStorage.setItem('bb_form', JSON.stringify(data())); }catch(e){} }
+function load(){
+  try{
+    const o = JSON.parse(localStorage.getItem('bb_form')||'{}');
+    for(const [k,v] of Object.entries(o)){
+      const els = form.elements[k]; if(!els) continue;
+      if(els instanceof RadioNodeList){ els.forEach(x=>{ if(x.value===v) x.checked=true; }); }
+      else els.value = v;
+    }
+    const s = +localStorage.getItem('bb_step'); if(s) cur = s;
+  }catch(e){}
+}
+load(); recalc(); show(cur);
+
+/* ---------- Çıktılar ---------- */
+const fname = () => 'olcum_formu_' + (slug(form.ad_soyad.value)||'katilimci') + '_' + (form.olcum_tarihi.value||new Date().toISOString().slice(0,10));
+function msg(t,cls){ const m=$('#msg'); m.textContent=t; m.className=cls||''; }
+
+$('#btnPdf').onclick = ()=>{
+  // yazdırma penceresinde "PDF olarak kaydet" seçilir; tüm bölümler basılır
+  document.title = fname(); window.print();
+};
+$('#btnCsv').onclick = ()=>{
+  const o = data();
+  const esc = v => '"'+String(v).replace(/"/g,'""')+'"';
+  const csv = '﻿' + Object.keys(o).map(esc).join(';') + '\n' + Object.values(o).map(esc).join(';');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
+  a.download = fname()+'.csv'; document.body.appendChild(a); a.click(); a.remove();
+};
+$('#btnSend').onclick = async ()=>{
+  if(!$('#kvkk').checked){ msg('Göndermeden önce açık rıza kutusunu işaretleyin.','err'); return; }
+  if(!form.ad_soyad.value.trim()){ msg('Lütfen adınızı soyadınızı girin (1. sayfa).','err'); return; }
+  if(!FORM_ENDPOINT){ msg('Gönderim adresi tanımlı değil. "PDF olarak kaydet" veya "CSV indir" ile dosyayı kaydedip bize iletebilirsiniz.','err'); return; }
+  const btn=$('#btnSend'); btn.disabled=true; msg('Gönderiliyor…');
+  try{
+    const res = await fetch(FORM_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(data())});
+    if(!res.ok) throw new Error(res.status);
+    msg('Formunuz gönderildi. Teşekkür ederiz!','good');
+  }catch(e){ msg('Gönderilemedi. İnternet bağlantınızı kontrol edip tekrar deneyin veya PDF/CSV olarak iletin.','err'); }
+  btn.disabled=false;
+};
+$('#btnClear').onclick = ()=>{
+  if(!confirm('Girdiğiniz tüm bilgiler silinecek. Emin misiniz?')) return;
+  form.reset(); touched.clear(); try{localStorage.removeItem('bb_form');localStorage.removeItem('bb_step')}catch(e){}
+  recalc(); show(0); msg('');
+};
+</script>
+</body>
+</html>
