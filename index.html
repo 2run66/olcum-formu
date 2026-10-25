@@ -27,6 +27,10 @@ h3{font-size:14px;margin:20px 0 10px;padding-left:10px;border-left:6px solid var
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
 label.f{display:block;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:9px 10px;font-size:11px;font-weight:800;text-transform:uppercase;color:var(--ink)}
 label.f input,label.f select{display:block;width:100%;margin-top:5px}
+label.f{position:relative}
+.info{position:relative;display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;min-height:0;padding:0;margin-left:4px;border-radius:50%;border:1px solid var(--brand);background:#fff;color:var(--brand);font:italic 700 12px/1 Georgia,serif;vertical-align:middle;cursor:help}
+.info .tip{display:none;position:absolute;left:50%;top:calc(100% + 8px);transform:translateX(-30%);width:250px;max-width:70vw;background:var(--ink);color:#fff;font:500 12px/1.4 system-ui,sans-serif;font-style:normal;text-transform:none;text-align:left;padding:9px 11px;border-radius:8px;z-index:8;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+.info:hover .tip,.info:focus .tip{display:block}
 input[type=text],input[type=email],input[type=date],input[type=number],select,textarea{font:inherit;font-size:16px;font-weight:500;text-transform:none;color:var(--ink);background:var(--field);border:1px solid transparent;border-radius:8px;padding:10px;min-height:44px;width:100%}
 input:focus,select:focus,textarea:focus{outline:2px solid var(--brand);background:#fff}
 textarea{min-height:130px;resize:vertical}
@@ -46,11 +50,10 @@ textarea{min-height:130px;resize:vertical}
 .row .t em{font-style:normal;font-weight:600;font-size:12px;color:var(--muted);white-space:nowrap}
 .row .in{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
 .row .in .full{grid-column:1/-1}
-.row .in.four .full{grid-column:auto}
 .row .in span{display:block;font-size:11px;font-weight:700;color:var(--muted);margin-bottom:3px;text-transform:uppercase}
 .row.calc{background:#f7fbf8}
 .cols{display:grid;grid-template-columns:1fr;gap:0 24px}
-@media(min-width:760px){.cols{grid-template-columns:1fr 1fr}.row .in{grid-template-columns:1fr 1fr 1.6fr}.row .in .full{grid-column:auto}.row.two .in{grid-template-columns:1fr 1fr}.row .in.four{grid-template-columns:1fr 1fr 1fr 1.6fr}}
+@media(min-width:760px){.cols{grid-template-columns:1fr 1fr}.row .in{grid-template-columns:1fr 1fr 1.6fr}.row .in .full{grid-column:auto}.row.two .in{grid-template-columns:1fr 1fr}.row .in.res{grid-template-columns:repeat(4,1fr)}.row .in.res .full{grid-column:1/-1}}
 nav.nv{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom));display:flex;gap:10px;justify-content:center;z-index:6}
 nav.nv button{flex:1;max-width:260px}
 button{font:inherit;font-weight:700;font-size:15px;min-height:46px;border-radius:10px;border:1px solid var(--line);background:#fff;color:var(--ink);padding:0 16px;cursor:pointer}
@@ -92,7 +95,7 @@ footer{font-size:11px;color:var(--muted);text-align:center;padding:0 16px 120px}
     <label class="f">Ölçüm Tarihi<input type="date" name="olcum_tarihi" id="olcumTarihi"></label>
     <label class="f">Doğum Tarihi<input type="date" name="dogum_tarihi" id="dogumTarihi"></label>
     <label class="f">Yaş<input type="text" name="yas" id="yas" inputmode="decimal"></label>
-    <label class="f">Çeğrek Yaşı<input type="text" name="cegrek_yasi"></label>
+    <label class="f" for="cegrek">Çeyrek Yaşı <button type="button" class="info" aria-label="Çeyrek yaşı nedir?">i<span class="tip" role="tooltip">Doğum tarihinden otomatik hesaplanır: doğduğunuz yılın hangi çeyreğinde doğduğunuzu gösterir. 1 = Ocak–Mart, 2 = Nisan–Haziran, 3 = Temmuz–Eylül, 4 = Ekim–Aralık.</span></button><input type="text" name="cegrek_yasi" id="cegrek"></label>
     <label class="f">Uyruğu<input type="text" name="uyruk"></label>
     <label class="f">Anne Ayakta Boy Uzunluğu (cm)<input type="text" name="anne_boy" id="anneBoy" inputmode="decimal"></label>
     <label class="f">Baba Ayakta Boy Uzunluğu (cm)<input type="text" name="baba_boy" id="babaBoy" inputmode="decimal"></label>
@@ -215,31 +218,22 @@ const CEVRE = [["Boyun Çevresi","cm"],["Omuz Çevresi","cm"],["Sağ Üst Kol Ç
 const GENISLIK = [["Omuz Genişliği","mm"],["Sağ Dirsek (Humerus) Genişliği","mm"],["Kalça (Biotrokanterik) Genişliği","mm"],["Sağ Diz Altı (Femur) Genişliği","mm"]];
 const DERI = [["Sağ Üst Arka Kol (Triceps) Deri Kıvrımı","mm"],["Sağ Subscapular Deri Kıvrımı","mm"],["Sağ Supraspinal Deri Kıvrımı","mm"],["Sağ İç Orta Baldır Deri Kıvrımı","mm"]];
 const BIYO = [["Flamingo Denge Testi (60sn) Düşme Sayısı","sayı"],["Sağ El Kavrama Kuvveti","kg"],["Sol El Kavrama Kuvveti","kg"],["Kollar Serbest Çökerek Dikey Sıçrama","cm"],["Durarak Uzun Atlama","cm"],["Otur-Uzan-Eriş Esneklik Testi","cm"],["30 Saniye Kısmi (dize uzanarak) Mekik","sayı"],["Bükülü Kol Asılma","sn"],["Cetvel Düşürme Testi","cm"],["Disklere Dokunma Testi (50 dokunuş)","sn"]];
-const BUYUME = ["Kemik mineral yoğunluğu (BMD)","Kemik mineral içeriği (BMC)","Kemik yaşı (Greulich-Pyle)","TW kemik yaşı (Tanner-Whitehouse)","RUS skoru (Tanner-Whitehouse)","Olgunlaşma sınıfı"];
-const LAB1 = ["Hemoglobin (Hb)","Ferritin","Total Kolesterol (TC)","Düşük Yoğunluklu Lipoprotein (LDL)","Yüksek Yoğunluklu Lipoprotein (HDL)","Trigliserid (TG)","Kan Glukozu","Hemoglobin A1c (HbA1c)","Sodyum (Na+)"];
-const LAB2 = ["Potasyum (K+)","Kalsiyum (Ca2+)","Magnezyum (Mg2+)","D Vitamini (25 OH)","B12 Vitamini","Folat (Folik Asit)","C Vitamini (Askorbik Asit)","E Vitamini (Tokoferol)","Testosteron (T)"];
+const BUYUME = [["Kemik mineral yoğunluğu (BMD)","g/cm²"],["Kemik mineral içeriği (BMC)","g"],["Kemik yaşı (Greulich-Pyle)","yıl"],["TW kemik yaşı (Tanner-Whitehouse)","yıl"],["RUS skoru (Tanner-Whitehouse)","puan"],["Olgunlaşma sınıfı","—"]];
+const LAB1 = [["Hemoglobin (Hb)","g/dL"],["Ferritin","ng/mL"],["Total Kolesterol (TC)","mg/dL"],["Düşük Yoğunluklu Lipoprotein (LDL)","mg/dL"],["Yüksek Yoğunluklu Lipoprotein (HDL)","mg/dL"],["Trigliserid (TG)","mg/dL"],["Kan Glukozu","mg/dL"],["Hemoglobin A1c (HbA1c)","%"],["Sodyum (Na+)","mmol/L"]];
+const LAB2 = [["Potasyum (K+)","mmol/L"],["Kalsiyum (Ca2+)","mg/dL"],["Magnezyum (Mg2+)","mg/dL"],["D Vitamini (25 OH)","ng/mL"],["B12 Vitamini","pg/mL"],["Folat (Folik Asit)","ng/mL"],["C Vitamini (Askorbik Asit)","mg/dL"],["E Vitamini (Tokoferol)","mg/L"],["Testosteron (T)","ng/dL"]];
 const CALC1 = ["Olgunlaşma Durumu","Tepe Boy Uzama Hızı","Tepe Boya Uzaklık (yıl-ay)","Vücut Tipi Sınıflandırması (somatotip)","Beden Kütle İndeksi","Ebeveyn Boy Ortalaması (cm)","Tahmini Yetişkin Boyu (Khamis Roche Formülü) (cm)"];
 const CALC2 = ["Oturma yüksekliğinin ayakta boy uzunluğuna oranı","Kulaç uzunluğunun boy uzunluğuna oranı","Bel çevresinin boy uzunluğuna oranı","İki bölge deri kıvrım ölçümüne göre vücut yağ kütlesi","İki bölge deri kıvrım ölçümüne göre vücut yağ yüzdesi","İki bölge deri kıvrım ölçümüne göre yağsız vücut kütlesi","İki bölge deri kıvrım ölçümüne göre yağsız vücut kütlesi yüzdesi"];
 
 const h = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
-function trialRows(id, list, prefix, labels=["1. Deneme","2. Deneme","Not"]){
+function resultRows(id, list, prefix, startAt=1){
   $('#'+id).innerHTML = list.map(([t,u],i)=>{
     const k = prefix+'_'+slug(t);
-    return `<div class="row"><div class="t"><span>${i+1}. ${h(t)}</span><em>${h(u)}</em></div>
-      <div class="in"><div><span>${labels[0]}</span><input type="text" inputmode="decimal" name="${k}_1" data-k="${k}"></div>
-      <div><span>${labels[1]}</span><input type="text" inputmode="decimal" name="${k}_2"></div>
-      <div class="full"><span>${labels[2]}</span><input type="text" name="${k}_not"></div></div></div>`;
-  }).join('');
-}
-function textRows(id, list, prefix, startAt=1){
-  $('#'+id).innerHTML = list.map((t,i)=>{
-    const k = prefix+'_'+slug(t);
-    return `<div class="row"><div class="t"><span>${startAt+i}. ${h(t)}</span></div>
-      <div class="in four"><div><span>1. Deneme</span><input type="text" name="${k}_1"></div>
-      <div><span>2. Deneme</span><input type="text" name="${k}_2"></div>
-      <div><span>Birim</span><input type="text" name="${k}_birim"></div>
-      <div><span>Not</span><input type="text" name="${k}_not"></div></div></div>`;
+    const box = n => `<div><span>${n}. Sonuç</span><input type="text" inputmode="decimal" name="${k}_${n}"></div>`;
+    return `<div class="row"><div class="t"><span>${startAt+i}. ${h(t)}</span><em>${h(u)}</em></div>
+      <input type="hidden" name="${k}_birim" value="${h(u)}">
+      <div class="in res">${box(1)}${box(2)}${box(3)}${box(4)}
+      <div class="full"><span>Not</span><input type="text" name="${k}_not"></div></div></div>`;
   }).join('');
 }
 function calcRows(id, list, startAt){
@@ -253,15 +247,15 @@ function calcRows(id, list, startAt){
 
 $('#aktivite').innerHTML = AKTIVITE.map(([t,d],i)=>`<label class="opt"><input type="radio" name="aktivite" value="${h(t)}"><div><b>${h(t)}</b><span>${h(d)}</span></div></label>`).join('');
 $('#parq').innerHTML = PARQ.map((q,i)=>`<div class="q">${i+1}. ${h(q)}<div class="yn"><label><input type="radio" name="parq_${i+1}" value="Evet">EVET</label><label><input type="radio" name="parq_${i+1}" value="Hayır">HAYIR</label></div></div>`).join('');
-trialRows('kardiyo',KARDIYO,'kardiyo');
-trialRows('uzunluk',UZUNLUK,'uzunluk');
-trialRows('cevre',CEVRE,'cevre');
-trialRows('genislik',GENISLIK,'genislik',["1.","2.","Not"]);
-trialRows('deri',DERI,'deri',["1.","2.","Not"]);
-trialRows('biyo',BIYO,'biyo');
-textRows('buyume',BUYUME,'buyume');
-textRows('lab1',LAB1,'lab',1);
-textRows('lab2',LAB2,'lab',10);
+resultRows('kardiyo',KARDIYO,'kardiyo');
+resultRows('uzunluk',UZUNLUK,'uzunluk');
+resultRows('cevre',CEVRE,'cevre');
+resultRows('genislik',GENISLIK,'genislik');
+resultRows('deri',DERI,'deri');
+resultRows('biyo',BIYO,'biyo');
+resultRows('buyume',BUYUME,'buyume');
+resultRows('lab1',LAB1,'lab',1);
+resultRows('lab2',LAB2,'lab',10);
 calcRows('calc1',CALC1,1);
 calcRows('calc2',CALC2,8);
 
@@ -285,7 +279,7 @@ $('#next').onclick = ()=>show(cur+1);
 /* ---------- Otomatik hesaplama ---------- */
 const form = $('#form');
 const num = v => { const n = parseFloat(String(v||'').replace(',','.')); return isNaN(n) ? null : n; };
-const avg = k => { const a=[num(form[k+'_1']?.value), num(form[k+'_2']?.value)].filter(x=>x!==null); return a.length ? a.reduce((x,y)=>x+y)/a.length : null; };
+const avg = k => { const a=[1,2,3,4].map(n=>num(form[k+'_'+n]?.value)).filter(x=>x!==null); return a.length ? a.reduce((x,y)=>x+y)/a.length : null; };
 const r = (v,d=2)=> v===null||!isFinite(v) ? '' : String(Math.round(v*10**d)/10**d).replace('.',',');
 const touched = new Set();
 function setCalc(n, val){ const el = document.querySelector(`[data-calc="${n}"]`); if(el && !touched.has(n)) el.value = val; }
@@ -295,6 +289,10 @@ function recalc(){
   if(d1 && d2 && !touched.has('yas')){
     const y=(new Date(d2)-new Date(d1))/(365.25*864e5);
     if(y>=0) form.yas.value = r(y,1);
+  }
+  if(d1 && !touched.has('cegrek')){
+    const m = new Date(d1).getMonth();
+    form.cegrek_yasi.value = isNaN(m) ? '' : (Math.floor(m/3)+1)+'. çeyrek';
   }
   const kilo = avg('uzunluk_vucut_agirligi'), boy = avg('uzunluk_ayakta_boy_uzunlugu');
   const oturma = avg('uzunluk_oturma_boy_uzunlugu'), kulac = avg('uzunluk_kulac_uzunlugu_kol_acikligi');
@@ -308,6 +306,7 @@ function recalc(){
 }
 form.addEventListener('input', e=>{
   if(e.target.id==='yas') touched.add('yas');
+  if(e.target.id==='cegrek') touched.add('cegrek');
   if(e.target.dataset.calc) touched.add(+e.target.dataset.calc);
   recalc(); save();
 });
